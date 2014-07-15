@@ -1,0 +1,136 @@
+<!DOCTYPE HTML>
+<html lang="es">
+<head>
+	<meta charset="utf-8" />
+	<meta name="description" content="Este un ejercicio basado en http://www.romancortes.com/blog/a-tribute-to-the-beatles/. Aunque he modificado las fórmulas y el sistema de movimiento."/>
+    <meta name="keywords" content="" />
+        
+    <meta name="copyright" content="Basado en homenaje a los beatles de ROMAN CORTÉS. "/> 
+
+    <meta name="author" content="Daniel Barbero <daniel.barbero.perez@gmail.com>"/>
+    <meta name="robots" content="all" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+
+	<title>Frase Steve Jobs</title>
+	<style>
+	div#frase{
+		font-size: 22px;
+		font-family: Garamond;
+		margin: 40px auto;
+		
+	}
+
+	.movim {
+		transition:all 2s; 
+	}
+
+	</style>
+</head>
+<body>
+<p>Pulse sobre la frase para ver el efecto. Pulsando de nuevo vuelve al estado original.</p>
+
+<div id="frase" style="cursor: pointer; text-align: center; width: 450px; height: 470px; overflow: hidden;" onclick="anim()" >La mayoría de la gente piensa<br>que el diseño es una chapa,<br>es una simple decoración.<br>Para mí, nada es más importante<br>en el futuro que el diseño.<br>El diseño es el alma<br>de todo lo creado por el hombre.</div>
+
+</body>
+
+<script>
+var d='®¹ÃÐ§¤¤«°¸ÄÍÔÚÛØÑÆ¨»±éõĂČĕôòñîîîíñÿĊĔėħĳļŃŐĨŜĩİĺńŎħĬĴĻŌŘśŭťůƋƔƋůƈŰƄŽŲƅƄųƨƳƼǃǑƩǜƪưƻǅǎƨƬƴƼǍǙǜȉȕȡȭȹȭȭȬȬȬȪȦțȓȕȘɌɗɣɬɰɲɰɨɝɋɄȽɀɃʍʗʢʫʲʴʵʵʴʩʟʖʋʄʇʇʇʈʏʎʎʋ˕˥˯ˎ˕˟˪˶˽˿˳˝˩ˮ˕-ÈÁÁÈÚèùĆēĘĘĘĢĹņŖŤũřũťþþþþþËÜìĔĩĹŎŠũũŝőİİİİİŇİŔšŧũũĚĈþúāďĢēþþþþēħħĸĸũŐŐŢŢİİİİİŇİŔšŧũũĚĈþúāďĢÈÈÈÈÈàûėĬŀœũũıŃœþþþċĚĮŌũũũŌĮĚċþþþþČĠĸŐũũũũũŢőĿĨđĕäÑÁþþþďĩİİİńřũũũũũ';
+// SE REQUIEREN dos CARACTERES EN ESTA VARIABLE POR CADA LETRA DEL TEXTO IMP RESO							
+
+var xo=[], yo=[], xd=[], yd=[], e=[], dir=-1;
+var e;
+
+function transformarCaracteres(){
+
+	var n=0, g=document.getElementById('frase'), l=g.innerHTML, cadena='';
+	
+	while (n<l.length){
+
+		var caracter=l.charAt(n);
+
+		if (caracter==' ') {cadena+=caracter; n++}
+			// deja un espacio entre los tags, que al ser elementos inline, sí son tenidos en cuenta.
+		if (caracter=='<') {
+			while (l.charAt(n-1)!='>') 
+			// La condición deja de cumplirse al caracter siguiente de '>'. El navegador siempre interpreta como <br>
+				{cadena+=l.charAt(n); n++;
+			}
+		}
+
+		cadena+='<b>'+l.charAt(n)+'</b>';
+		n++;
+	} 
+
+	g.innerHTML=cadena;
+	// Hasta aqui convierte cada caracter en elemento inline, respetando espacios y saltos de linea
+	 
+	e=document.getElementById('frase').getElementsByTagName('b');
+	// e.length = 158
+
+	for (n=0; n<158; n++){
+		xo[n]=e[n].offsetLeft;
+		yo[n]=e[n].offsetTop;
+	}
+
+	
+ 	for (n=0; n<158; n++){
+ 		e[n].setAttribute("class" , "movim");
+		e[n].style.position='absolute';
+		e[n].style.left=xo[n]+'px';
+		e[n].style.top=yo[n]+'px';
+ 	}
+
+ }
+
+function ani(){	
+		
+	for (i=0; i<91; i++){	
+		var p=d.charCodeAt(i);
+		var q=d.charCodeAt(i+159);
+
+		xd[i]=(p*1.65)-124;
+		yd[i]=q-100;
+		// Formulas para usar caracteres con valores comprendidos entre 160-700
+
+		e[i].style.left=xd[i]+'px';
+		e[i].style.top=yd[i]+'px';
+		ms= 20+(i*50);
+		e[i].style.transitionDelay=ms+"ms";
+	}
+		for (i=1; i<68; i++){	
+		var p=d.charCodeAt(i+91);
+		var q=d.charCodeAt(i+250);
+
+		xd[i]=(p*1.65)-124;
+		yd[i]=q-100;
+		// Formulas para usar caracteres con valores comprendidos entre 160-700
+
+		e[i+91].style.left=xd[i]+'px';
+		e[i+91].style.top=yd[i]+'px';
+		ms= 20+(i*50);
+		e[i+91].style.transitionDelay=ms+"ms";
+	}
+}
+
+function anim_return(){
+	for (i=0; i<158; i++){	
+		 e[i].style.left=xo[i]+'px';
+		 e[i].style.top=yo[i]+'px';
+
+	}
+}
+
+function anim(){
+	dir*=-1;
+
+	if (dir > 0 ){
+		ani();	
+	}else {
+		anim_return();
+	}
+}
+
+transformarCaracteres(); 
+
+</script>
+</html
